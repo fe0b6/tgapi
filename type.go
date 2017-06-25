@@ -93,6 +93,11 @@ type ReplyKeyboardMarkup struct {
 	Selective       bool       `json:"selective"`
 }
 
+type ReplyKeyboardRemove struct {
+	RemoveKeyboard bool `json:"remove_keyboard"`
+	Selective      bool `json:"selective"`
+}
+
 // Сообщение
 type SendMessageData struct {
 	ChatId                interface{} `json:"chat_id"`

@@ -2,11 +2,18 @@ package tgapi
 
 import (
 	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
+	"sort"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -146,5 +153,54 @@ func (tg *Api) floodWait(ans APIResponse) (ok bool) {
 	time.Sleep(sleepTime * time.Second)
 
 	ok = true
+	return
+}
+
+// CheckAuth - Проверка авторизации
+func (tg *Api) CheckAuth(data map[string]interface{}) (ok bool) {
+
+	// Полверяем что хэш указан
+	if _, ex := data["hash"]; !ex {
+		return
+	}
+
+	// Получаем данные
+	keys := []string{}
+	values := map[string]string{}
+	for k, v := range data {
+		if k == "hash" {
+			if reflect.TypeOf(v) != reflect.TypeOf("") {
+				return
+			}
+			continue
+		}
+		keys = append(keys, k)
+
+		switch reflect.TypeOf(v) {
+		case reflect.TypeOf(""):
+			values[k] = v.(string)
+		case reflect.TypeOf(float64(0)):
+			values[k] = strconv.FormatFloat(v.(float64), 'f', -1, 64)
+		}
+	}
+
+	// Собираем строку
+	sort.Strings(keys)
+	arr := []string{}
+	for _, k := range keys {
+		arr = append(arr, k+"="+values[k])
+	}
+	checkStr := strings.Join(arr, "\n")
+
+	h256 := sha256.New()
+	h256.Write([]byte(tg.AccessToken))
+	hm := hmac.New(sha256.New, h256.Sum(nil))
+	hm.Write([]byte(checkStr))
+
+	// Убедимся что хэши совпали
+	if hex.EncodeToString(hm.Sum(nil)) == data["hash"].(string) {
+		ok = true
+	}
+
 	return
 }

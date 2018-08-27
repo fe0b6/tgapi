@@ -5,7 +5,8 @@ import (
 	"sync"
 )
 
-type Api struct {
+// API - Базовый объект
+type API struct {
 	AccessToken   string
 	RetryDontWait bool
 	retryCount    int
@@ -21,6 +22,7 @@ type APIResponse struct {
 	Parameters  APIResponseParameters `json:"parameters"`
 }
 
+// APIResponseParameters - параметры ответа
 type APIResponseParameters struct {
 	RetryAfter int `json:"retry_after"`
 }
@@ -29,9 +31,9 @@ type APIResponseParameters struct {
 	Типы для получения из TG
 */
 
-// Обновление от телеграма
+// Update - Обновление от телеграма
 type Update struct {
-	UpdateId      int64         `json:"update_id"`
+	UpdateID      int64         `json:"update_id"`
 	Message       Message       `json:"message"`
 	InlineQuery   InlineQuery   `json:"inline_query"`
 	CallbackQuery CallbackQuery `json:"callback_query"`
@@ -39,7 +41,7 @@ type Update struct {
 
 // User is a user, contained in Message and returned by GetSelf.
 type User struct {
-	Id        int64  `json:"id"`
+	ID        int64  `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	UserName  string `json:"username"`
@@ -47,7 +49,7 @@ type User struct {
 
 // Chat is returned in Message, because it's not clear which it is.
 type Chat struct {
-	Id        int64  `json:"id"`
+	ID        int64  `json:"id"`
 	Type      string `json:"type"`
 	Title     string `json:"title"`
 	UserName  string `json:"username"`
@@ -57,16 +59,16 @@ type Chat struct {
 
 // Message is returned by almost every request, and contains data about almost anything.
 type Message struct {
-	MessageId int64  `json:"message_id"`
+	MessageID int64  `json:"message_id"`
 	From      User   `json:"from"`
 	Date      int64  `json:"date"`
 	Chat      Chat   `json:"chat"`
 	Text      string `json:"text"`
 }
 
-// Inline запрос
+// InlineQuery - Inline запрос
 type InlineQuery struct {
-	Id     string `json:"id"`
+	ID     string `json:"id"`
 	From   User   `json:"user"`
 	Query  string `json:"query"`
 	Offset string `json:"offset"`
@@ -74,10 +76,10 @@ type InlineQuery struct {
 
 // CallbackQuery запрос
 type CallbackQuery struct {
-	Id              string  `json:"id"`
+	ID              string  `json:"id"`
 	From            User    `json:"from"`
 	Message         Message `json:"message"`
-	InlineMessageId string  `json:"inline_message_id"`
+	InlineMessageID string  `json:"inline_message_id"`
 	Data            string  `json:"data"`
 }
 
@@ -93,18 +95,19 @@ type ReplyKeyboardMarkup struct {
 	Selective       bool       `json:"selective"`
 }
 
+// ReplyKeyboardRemove - удаление клавиатуры
 type ReplyKeyboardRemove struct {
 	RemoveKeyboard bool `json:"remove_keyboard"`
 	Selective      bool `json:"selective"`
 }
 
-// Сообщение
+// SendMessageData - Сообщение
 type SendMessageData struct {
-	ChatId                interface{} `json:"chat_id"`
+	ChatID                interface{} `json:"chat_id"`
 	Text                  string      `json:"text"`
 	ParseMode             string      `json:"parse_mode"`
 	DisableWebPagePreview bool        `json:"disable_web_page_preview"`
-	ReplyToMessageId      int64       `json:"reply_to_message_id"`
+	ReplyToMessageID      int64       `json:"reply_to_message_id"`
 	ReplyMarkup           interface{} `json:"reply_markup"`
 	DisableNotification   bool        `json:"disable_notification"`
 }

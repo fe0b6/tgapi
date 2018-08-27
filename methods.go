@@ -5,24 +5,24 @@ import (
 	"unicode/utf8"
 )
 
-// Получаем инфу о боте
-func (tg *Api) GetMe() (ans APIResponse) {
+// GetMe - Получаем инфу о боте
+func (tg *API) GetMe() (ans APIResponse) {
 	method := "getMe"
 
-	return tg.sendJsonData(method, nil)
+	return tg.sendJSONData(method, nil)
 }
 
-// Установка Webhook
-func (tg *Api) SetWebhook(url string) (ans APIResponse) {
+// SetWebhook - Установка Webhook
+func (tg *API) SetWebhook(url string) (ans APIResponse) {
 	method := "setWebhook"
 
 	m := map[string]string{"url": url}
 
-	return tg.sendJsonData(method, m)
+	return tg.sendJSONData(method, m)
 }
 
-// Отправка сообщения с проверкой на длину
-func (tg *Api) SendMessageBig(msg SendMessageData) (ans []APIResponse) {
+// SendMessageBig - Отправка сообщения с проверкой на длину
+func (tg *API) SendMessageBig(msg SendMessageData) (ans []APIResponse) {
 	ans = []APIResponse{}
 
 	// Если длина текста влезет в одно сообщение - просто отправляем
@@ -57,8 +57,8 @@ func (tg *Api) SendMessageBig(msg SendMessageData) (ans []APIResponse) {
 	return
 }
 
-// Отправка сообщения
-func (tg *Api) SendMessage(msg SendMessageData) (ans APIResponse) {
+// SendMessage - Отправка сообщения
+func (tg *API) SendMessage(msg SendMessageData) (ans APIResponse) {
 	method := "sendMessage"
 
 	// Если клавиатура не указана - делаем пустую
@@ -66,5 +66,5 @@ func (tg *Api) SendMessage(msg SendMessageData) (ans APIResponse) {
 		msg.ReplyMarkup = ReplyKeyboardMarkup{Keyboard: [][]string{}}
 	}
 
-	return tg.sendJsonData(method, msg)
+	return tg.sendJSONData(method, msg)
 }

@@ -42,9 +42,9 @@ func init() {
 }
 
 // Отправляем json
-func (tg *Api) sendJsonData(method string, data interface{}) (ans APIResponse) {
+func (tg *API) sendJSONData(method string, data interface{}) (ans APIResponse) {
 	for {
-		ans = tg.sendJsonDataFull(method, data)
+		ans = tg.sendJSONDataFull(method, data)
 
 		// Если переборщили с кол-вом сообщенией - подождем и попробуем заново
 		if !ans.Ok && ans.ErrorCode == 429 {
@@ -63,7 +63,8 @@ func (tg *Api) sendJsonData(method string, data interface{}) (ans APIResponse) {
 
 	return
 }
-func (tg *Api) sendJsonDataFull(method string, data interface{}) (ans APIResponse) {
+
+func (tg *API) sendJSONDataFull(method string, data interface{}) (ans APIResponse) {
 	// Формируем json данные
 	b, err := json.Marshal(&data)
 	if err != nil {
@@ -72,7 +73,7 @@ func (tg *Api) sendJsonDataFull(method string, data interface{}) (ans APIRespons
 	}
 
 	// Формируем запрос
-	req, err := http.NewRequest("POST", tg.getRequestUrl(method), bytes.NewBuffer(b))
+	req, err := http.NewRequest("POST", tg.getRequestURL(method), bytes.NewBuffer(b))
 	if err != nil {
 		log.Println("[error]", method, err)
 		return
@@ -101,7 +102,7 @@ func (tg *Api) sendJsonDataFull(method string, data interface{}) (ans APIRespons
 }
 
 // Проверяем ответ телеграма
-func (tg *Api) checkAnswer(method string, resp *http.Response) (ans APIResponse) {
+func (tg *API) checkAnswer(method string, resp *http.Response) (ans APIResponse) {
 	defer resp.Body.Close()
 
 	// Читаем ответ
@@ -128,12 +129,12 @@ func (tg *Api) checkAnswer(method string, resp *http.Response) (ans APIResponse)
 }
 
 // Формируем url для запроса
-func (tg *Api) getRequestUrl(method string) string {
+func (tg *API) getRequestURL(method string) string {
 	return fmt.Sprintf(APIEndpoint, tg.AccessToken, method)
 }
 
 // Ждем между запросами если телеграм ответил что запросы слишком частые
-func (tg *Api) floodWait(ans APIResponse) (ok bool) {
+func (tg *API) floodWait(ans APIResponse) (ok bool) {
 	// Определяем сколько времени будет ждать
 	sleepTime := time.Duration(ans.Parameters.RetryAfter)
 	if tg.retryCount >= 5 {
@@ -157,7 +158,7 @@ func (tg *Api) floodWait(ans APIResponse) (ok bool) {
 }
 
 // CheckAuth - Проверка авторизации
-func (tg *Api) CheckAuth(data map[string]interface{}) (ok bool) {
+func (tg *API) CheckAuth(data map[string]interface{}) (ok bool) {
 
 	// Полверяем что хэш указан
 	if _, ex := data["hash"]; !ex {

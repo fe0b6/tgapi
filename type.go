@@ -24,7 +24,8 @@ type APIResponse struct {
 
 // APIResponseParameters - параметры ответа
 type APIResponseParameters struct {
-	RetryAfter int `json:"retry_after"`
+	RetryAfter      int   `json:"retry_after"`
+	MigrateToChatID int64 `json:"migrate_to_chat_id"`
 }
 
 /*

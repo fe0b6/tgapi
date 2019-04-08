@@ -88,8 +88,12 @@ func (tg *API) sendJSONDataFull(method string, data interface{}) (ans APIRespons
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		ans.Description = resp.Status
-		ans.ErrorCode = resp.StatusCode
+		if resp != nil {
+			ans.Description = resp.Status
+			ans.ErrorCode = resp.StatusCode
+		} else {
+			ans.ErrorCode = 500
+		}
 
 		log.Println("[error]", method, err)
 		return

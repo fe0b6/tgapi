@@ -112,3 +112,22 @@ type SendMessageData struct {
 	ReplyMarkup           interface{} `json:"reply_markup"`
 	DisableNotification   bool        `json:"disable_notification"`
 }
+
+// SendAudio - Аудио для отправки
+type SendAudio struct {
+	ChatID              int64  `json:"chat_id,omitempty"`
+	Audio               []byte `json:"audio,omitempty"`
+	Duration            int    `json:"duration,omitempty"`
+	Performer           string `json:"performer,omitempty"`
+	Title               string `json:"title,omitempty"`
+	DisableNotification bool   `json:"disable_notification,omitempty"`
+}
+
+// Структура для аплоада данных
+type multipartDataObj struct {
+	keys     []string
+	values   [][]byte
+	method   string
+	filePath string
+	fileName string
+}

@@ -120,6 +120,7 @@ func (tg *API) checkAnswer(method string, resp *http.Response) (ans APIResponse)
 	err = json.Unmarshal(body, &ans)
 	if err != nil {
 		log.Println("[error]", method, err)
+		log.Println(string(body))
 		return
 	}
 

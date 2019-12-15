@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"strconv"
@@ -137,6 +138,7 @@ func (tg *API) sendMultipartData(data multipartDataObj, title string) (ans APIRe
 			fw  io.Writer
 		)
 		if k == "audio" {
+			log.Println("send audio", title)
 			// Add the other fields
 			if fw, err = w.CreateFormFile(k, title); err != nil {
 				return

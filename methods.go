@@ -10,6 +10,13 @@ import (
 	"unicode/utf8"
 )
 
+// GetFile - Отправляем сообщение
+func (tg *API) GetFile(fileID string) (ans APIResponse) {
+	fdata := SendGetFile{FileID: fileID}
+
+	return tg.sendJSONData("getFile", fdata)
+}
+
 // GetMe - Получаем инфу о боте
 func (tg *API) GetMe() (ans APIResponse) {
 	method := "getMe"

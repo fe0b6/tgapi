@@ -95,9 +95,20 @@ type CallbackQuery struct {
 	Data            string  `json:"data"`
 }
 
+type File struct {
+	FileID   string `json:"file_id"`
+	FileSize int64  `json:"file_size"`
+	FilePath string `json:"file_path"`
+}
+
 /*
 	Типы для отправки в TG
 */
+
+// SendGetFile - инфа о файле
+type SendGetFile struct {
+	FileID string `json:"file_id"`
+}
 
 // ReplyKeyboardMarkup allows the Bot to set a custom keyboard.
 type ReplyKeyboardMarkup struct {

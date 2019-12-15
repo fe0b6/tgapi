@@ -143,6 +143,7 @@ type SendAudio struct {
 	Performer           string `json:"performer,omitempty"`
 	Title               string `json:"title,omitempty"`
 	DisableNotification bool   `json:"disable_notification,omitempty"`
+	FileName            string `json:"filename,omitempty"`
 }
 
 // Структура для аплоада данных

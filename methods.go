@@ -121,7 +121,7 @@ func (tg *API) SendAudio(msg SendAudio) (ans APIResponse) {
 		keys:   keys,
 		values: values,
 		method: method,
-	}, msg.Title)
+	}, msg.FileName)
 }
 
 // Отправляем в телеграм Multipart
@@ -133,7 +133,7 @@ func (tg *API) sendMultipartData(data multipartDataObj, title string) (ans APIRe
 	defer w.Close()
 
 	buf := bytes.NewBuffer(data.values[5])
-	part, err := w.CreateFormFile("audio", "test.mp3")
+	part, err := w.CreateFormFile("audio", title)
 	if err != nil {
 		log.Println(err)
 		return

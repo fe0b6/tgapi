@@ -169,6 +169,7 @@ func (tg *API) sendMultipartData(data multipartDataObj, title string) (ans APIRe
 	}
 	// Don't forget to set the content type, this will contain the boundary.
 	req.Header.Set("Content-Type", w.FormDataContentType())
+	log.Println(w.FormDataContentType())
 
 	// Submit the request
 	client := &http.Client{Transport: httpTr}

@@ -120,11 +120,11 @@ func (tg *API) SendAudio(msg SendAudio) (ans APIResponse) {
 		keys:   keys,
 		values: values,
 		method: method,
-	})
+	}, msg.Title)
 }
 
 // Отправляем в телеграм Multipart
-func (tg *API) sendMultipartData(data multipartDataObj) (ans APIResponse) {
+func (tg *API) sendMultipartData(data multipartDataObj, title string) (ans APIResponse) {
 	// Prepare a form that you will submit to that URL.
 	var b bytes.Buffer
 	w := multipart.NewWriter(&b)
@@ -136,10 +136,18 @@ func (tg *API) sendMultipartData(data multipartDataObj) (ans APIResponse) {
 			err error
 			fw  io.Writer
 		)
-		// Add the other fields
-		if fw, err = w.CreateFormField(k); err != nil {
-			return
+		if k == "audio" {
+			// Add the other fields
+			if fw, err = w.CreateFormFile(k, title); err != nil {
+				return
+			}
+		} else {
+			// Add the other fields
+			if fw, err = w.CreateFormField(k); err != nil {
+				return
+			}
 		}
+
 		if _, err = fw.Write(data.values[i]); err != nil {
 			return
 		}

@@ -2,7 +2,9 @@ package tgapi
 
 import (
 	"bytes"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"strconv"
@@ -10,7 +12,25 @@ import (
 	"unicode/utf8"
 )
 
-// GetFile - Отправляем сообщение
+// DLFile -
+func (tg *API) DLFile(filePath string) (file []byte, err error) {
+	resp, err := http.Get(fmt.Sprintf(FileEndpoint, tg.AccessToken, filePath))
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		return
+	}
+
+	file, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+// GetFile -
 func (tg *API) GetFile(fileID string) (ans APIResponse) {
 	fdata := SendGetFile{FileID: fileID}
 

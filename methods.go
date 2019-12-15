@@ -132,17 +132,22 @@ func (tg *API) sendMultipartData(data multipartDataObj, title string) (ans APIRe
 	// закрываем multipart
 	defer w.Close()
 
+	buf := bytes.NewBuffer(data.values[5])
+	part, err := w.CreateFormFile("audio", "test.mp3")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	_, err = io.Copy(part, buf)
+
 	for i, k := range data.keys {
 		var (
 			err error
 			fw  io.Writer
 		)
 		if k == "audio" {
-			log.Println("send audio", title)
-			// Add the other fields
-			if fw, err = w.CreateFormFile(k, title); err != nil {
-				return
-			}
+			continue
 		} else {
 			// Add the other fields
 			if fw, err = w.CreateFormField(k); err != nil {

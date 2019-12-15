@@ -65,6 +65,17 @@ type Message struct {
 	Date      int64  `json:"date"`
 	Chat      Chat   `json:"chat"`
 	Text      string `json:"text"`
+	Audio     Audio  `json:"audio"`
+}
+
+// Audio audio type
+type Audio struct {
+	FileID    string `json:"file_id"`
+	Duration  int    `json:"duration"`
+	Performer string `json:"performer"`
+	Title     string `json:"title"`
+	MimeType  string `json:"mime_type"`
+	FileSize  int64  `json:"file_size"`
 }
 
 // InlineQuery - Inline запрос
